@@ -1,0 +1,13 @@
+* {
+    border: 0px;
+    outline: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+ul.flashes {
+    color: red;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
