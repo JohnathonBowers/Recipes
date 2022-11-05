@@ -1,7 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models.md_recipe import Recipe
-from flask_app.models.md_user import User
+from flask_app.models import md_recipe, md_user
 
 @app.route('/recipes')
 def r_show_recipes():
@@ -11,5 +10,4 @@ def r_show_recipes():
         data:dict = {
             'user_id' : session.get('user_id')
         }
-        user = User.get_by_user_id(data)
-        return render_template ('recipes.html', user = user)
+        return render_template ('recipes.html', user = md_user.User.get_by_user_id(data), recipes = md_recipe.Recipe.get_all_recipes_with_creator())

@@ -17,21 +17,21 @@ class Recipe:
         self.creator = None
     
     @staticmethod
-    def validate_recipe(recipe:dict)
+    def validate_recipe(recipe:dict):
         is_valid = True
         if len(recipe.get('name')) < 2:
             flash('Recipe name must be two or more characters.', 'name')
             is_valid = False
         if len(recipe.get('description')) < 1:
-            flash('Please give a brief description of the recipe.')
+            flash('Please give a brief description of the recipe.', 'description')
             is_valid = False
         if len(recipe.get('instructions')) < 1:
-            flash('Please provide recipe instructions.')
+            flash('Please provide recipe instructions.', 'instructions')
             is_valid = False
         if len(recipe.get('instructions')) > 1000:
             flash('Recipe instructions must not exceed 1000 characters.', 'instructions')
             is_valid = False
-        if not datetime.datetime.strptime(recipe.get('date_cooked'), '%Y-%m-%d')  # I referenced Stack Overflow for this validation
+        if not datetime.datetime.strptime(recipe.get('date_cooked'), '%Y-%m-%d'):  # I referenced Stack Overflow for this validation
             flash('Please enter a valid date', 'date_cooked')
             is_valid = False
         if len(recipe.get('under')) < 1:
@@ -40,15 +40,15 @@ class Recipe:
         return is_valid
 
     @classmethod
-    def create_recipe(cls, data:dict)
+    def create_recipe(cls, data:dict):
         query = 'INSERT INTO recipes (name, description, instructions, date_cooked, under, user_id) VALUES (%(name)s, %(description)s, %(instructions)s, %(date_cooked)s, %(under)s, %(user_id)s);'
         return connectToMySQL('recipes_schema').query_db(query, data)
 
     @classmethod
-    def get_all_recipes_with_creator(cls)
+    def get_all_recipes_with_creator(cls):
         query = 'SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id;'
         results = connectToMySQL('recipes_schema').query_db(query)
-        all_recipes:list[objects] = []
+        all_recipes:list[cls] = []
         for row in results:
             one_recipe = cls(row)
             one_recipes_author_info = {

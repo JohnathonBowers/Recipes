@@ -20,7 +20,7 @@
             <form action="/login-register" method="post" class="justify-content-start">
                 <div>
                     <label for="first_name" class="form-label mb-2">First Name:</label>
-                    <input type="text" name="first_name" class="form-control mb-2" value="{{ session['first_name'] }}">
+                    <input type="text" name="first_name" class="form-control mb-2" value="{{ session.get('first_name') }}">
                 </div>
                 <div>
                     {% with names = get_flashed_messages(category_filter=['first_name']) %}
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <label for="last_name" class="form-label mt-2 mb-2">Last Name:</label>
-                    <input type="text" name="last_name" class="form-control mb-2" value="{{ session['last_name'] }}">
+                    <input type="text" name="last_name" class="form-control mb-2" value="{{ session.get('last_name') }}">
                 </div>
                 <div>
                     {% with names = get_flashed_messages(category_filter=['last_name']) %}
@@ -50,7 +50,7 @@
                 </div>
                 <div>
                     <label for="email" class="form-label mt-2 mb-2">Email:</label>
-                    <input type="text" name="email" class="form-control mb-2" value="{{ session['email'] }}">
+                    <input type="text" name="email" class="form-control mb-2" value="{{ session.get('email') }}">
                 </div>
                 <div>
                     {% with names = get_flashed_messages(category_filter=['email']) %}

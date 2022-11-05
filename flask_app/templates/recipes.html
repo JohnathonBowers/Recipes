@@ -17,13 +17,41 @@
             <a href="/logout"><button class="btn btn-primary btn-sm ms-2 me-4">Log Out</button></a>
         </div> 
     </nav>
-    <div class="container mt-4">
+    <div class="container mt-4 col-lg-4">
         <div class="row">
-            <h1>Welcome, {{user.first_name}}</h1>
-            <p>All posted recipes:</p>
+            <h1 class="mb-4">Welcome, {{user.first_name}}</h1>
+        </div>
+        <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+            <h4 class="align-middle">All posted recipes:</h4>
+            <a href="/recipes/create"><button class="btn btn-primary">Create</button></a>
         </div>
         <div class="row">
-            
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th class="align-middle">Name</th>
+                        <th class="align-middle">Under 30</th>
+                        <th class="align-middle">Posted By</th>
+                        <th class="align-middle">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recipe in recipes %}
+                        <tr>
+                            <td class="align-middle">{{ recipe.name }}</td>
+                            <td class="align-middle">{{ recipe.under }}</td>
+                            <td class="align-middle">{{ recipe.creator.first_name }}</td>
+                            <td>
+                                <a href="#"><button class="btn btn-success me-1">View</button></a>
+                                {% if recipe.creator.id == user.id %}
+                                <a href="#"><button class="btn btn-warning mb-1 me-1">Edit</button></a>
+                                <a href="#"><button class="btn btn-danger mb-1">Delete</button></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
