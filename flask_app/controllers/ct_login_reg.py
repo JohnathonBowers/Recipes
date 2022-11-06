@@ -2,7 +2,7 @@ from flask_app import app
 from flask_app.__init__ import bcrypt
 from flask import render_template, redirect, request, session, flash
 
-from flask_app.models.md_user import User
+from flask_app.models import md_user
 
 @app.route('/')
 def p_home():
@@ -14,7 +14,7 @@ def r_login_registration():
 
 @app.route('/login-register', methods=['POST'])
 def f_register_user():
-    if not User.validate_registration(request.form):
+    if not md_user.User.validate_registration(request.form):
         session['first_name'] = request.form.get('first_name')
         session['last_name'] = request.form.get('last_name')
         session['email'] = request.form.get('email')
@@ -22,7 +22,7 @@ def f_register_user():
     data:dict = {
         'email': request.form.get('email')
     }
-    user_in_db = User.get_by_email(data)
+    user_in_db = md_user.User.get_by_email(data)
     if user_in_db:
         session['first_name'] = request.form.get('first_name')
         session['last_name'] = request.form.get('last_name')
@@ -39,12 +39,12 @@ def f_register_user():
             'email' : request.form.get('email'),
             'password' : pw_hash
         }
-        session['user_id'] = User.save(data)
+        session['user_id'] = md_user.User.save(data)
         return redirect ('/recipes')
 
 @app.route('/login-login', methods=['POST'])
 def f_login():
-    if not User.validate_login(request.form):
+    if not md_user.User.validate_login(request.form):
         session.pop('first_name')
         session.pop('last_name')
         session.pop('email')
@@ -53,7 +53,7 @@ def f_login():
     data:dict = {
         'email' : request.form.get('login_email')
     }
-    user_in_db = User.get_by_email(data)
+    user_in_db = md_user.User.get_by_email(data)
     if not user_in_db:
         session['login_email'] = request.form.get('login_email')
         flash('No user associated with this email. Try using a different email or registering for a new account.', 'login_email')

@@ -19,22 +19,24 @@ class Recipe:
     @staticmethod
     def validate_recipe(recipe:dict):
         is_valid = True
-        if len(recipe.get('name')) < 2:
-            flash('Recipe name must be two or more characters.', 'name')
+        if len(recipe.get('name')) < 3:
+            flash('Recipe name must be at least three characters long.', 'name')
             is_valid = False
-        if len(recipe.get('description')) < 1:
-            flash('Please give a brief description of the recipe.', 'description')
+        if len(recipe.get('description')) < 3:
+            flash('Recipe description must be at least three characters long.', 'description')
             is_valid = False
-        if len(recipe.get('instructions')) < 1:
-            flash('Please provide recipe instructions.', 'instructions')
+        if len(recipe.get('instructions')) < 3:
+            flash('Recipe instructions must be at least three characters long.', 'instructions')
             is_valid = False
         if len(recipe.get('instructions')) > 1000:
             flash('Recipe instructions must not exceed 1000 characters.', 'instructions')
             is_valid = False
-        if not datetime.datetime.strptime(recipe.get('date_cooked'), '%Y-%m-%d'):  # I referenced Stack Overflow for this validation
+        try: # I referred to Stack Overflow for how to validate a date input
+            datetime.datetime.strptime(recipe.get('date_cooked'), '%Y-%m-%d')
+        except ValueError:
             flash('Please enter a valid date', 'date_cooked')
             is_valid = False
-        if len(recipe.get('under')) < 1:
+        if not recipe.get('under'):
             flash('Please indicate whether this recipe can be prepared in under 30 minutes.', 'under')
             is_valid = False
         return is_valid

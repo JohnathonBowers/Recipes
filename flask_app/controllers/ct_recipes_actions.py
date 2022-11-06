@@ -16,9 +16,12 @@ def r_create_recipe():
 @app.route('/recipes/create-add', methods=['POST'])
 def f_create_recipe():
     if not md_recipe.Recipe.validate_recipe(request.form):
+        print (request.form)
         session['name'] = request.form.get('name')
         session['description'] = request.form.get('description')
         session['instructions'] = request.form.get('instructions')
         session['date_cooked'] = request.form.get('date_cooked')
         session['under'] = request.form.get('under')
-        return redirect ('recipes/create')
+        return redirect ('/recipes/create')
+    md_recipe.Recipe.create_recipe(request.form)
+    return redirect ('/recipes')    
