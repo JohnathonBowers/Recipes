@@ -48,7 +48,7 @@ class Recipe:
 
     @classmethod
     def get_all_recipes_with_creator(cls):
-        query = 'SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id;'
+        query = 'SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id ORDER BY recipes.name ASC;'
         results = connectToMySQL('recipes_schema').query_db(query)
         all_recipes:list[cls] = []
         for row in results:
@@ -66,3 +66,31 @@ class Recipe:
             one_recipe.creator = author
             all_recipes.append(one_recipe)
         return all_recipes
+    
+    @classmethod
+    def get_one_recipe_with_creator(cls, data):
+        query = 'SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id WHERE recipes.id = %(recipe_id)s;'
+        result:dict = connectToMySQL('recipes_schema').query_db(query, data)
+        recipe = cls(result[0])
+        recipe_author_info = {
+            'id' : result[0].get('users.id'),
+            'first_name' : result[0].get('first_name'),
+            'last_name' : result[0].get('last_name'),
+            'email' : result[0].get('email'),
+            'password' : result[0].get('password'),
+            'created_at' : result[0].get('created_at'),
+            'updated_at' : result[0].get('updated_at'),
+        }
+        author = md_user.User(recipe_author_info)
+        recipe.creator = author
+        return recipe
+
+    @classmethod
+    def edit_recipe(cls, data):
+        query = 'UPDATE recipes SET name = %(name)s, description = %(description)s, instructions = %(instructions)s, date_cooked = %(date_cooked)s, under = %(under)s WHERE id = %(recipe_id)s'
+        return connectToMySQL('recipes_schema').query_db(query, data)
+
+    @classmethod
+    def destroy_recipe(cls, data):
+        query = 'DELETE FROM recipes WHERE id = %(recipe_id)s'
+        return connectToMySQL('recipes_schema').query_db(query, data)

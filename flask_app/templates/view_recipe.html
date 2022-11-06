@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Share</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar bg-light d-flex">
+        <div class="ms-4 me-2">
+            <a href="/recipes" class="navbar-brand">Recipe Share</a>
+        </div>
+        <div class="ms-2 me-auto">
+            <a href="/recipes" class="nav-link">All Recipes</a>
+        </div>
+        <div class="d-flex flex-row">
+            <p class="align-middle my-auto me-2">Welcome, {{ user.first_name }}</p>
+            <a href="/logout"><button class="btn btn-primary btn-sm ms-2 me-4">Log Out</button></a>
+        </div> 
+    </nav>
+    <div class="container mt-4 col-lg-4">
+        <div class="d-flex flex-row justify-content-between align-items-end mb-2">
+            <h1 class="align-bottom ms-2">{{ recipe.name }}</h1>
+            <p class="align-bottom">Posted by: {{ recipe.creator.first_name }}</p>
+        </div>
+        <div class="container border">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td>Description:</td>
+                        <td>{{ recipe.description }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-nowrap">Under 30 Minutes?</td>
+                        <td>{{ recipe.under }}</td>
+                    </tr>
+                    <tr>
+                        <td>Instructions:</td>
+                        <td>{{ recipe.instructions }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Made:</td>
+                        <td>{{ recipe.date_cooked }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="/recipes"><button class="btn btn-primary mt-4">Back to Recipes</button></a>
+        </div>
+    </div>
+</body>
+</html>
